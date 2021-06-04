@@ -38,8 +38,9 @@ abstract class UserRemoteDataSource {
 }
 
 // const BASE_URL = 'http://base_url.com';
-const BASE_URL = 'http://192.168.1.10:3000/buyer';
+const BASE_URL = 'http://your_backend_url';
 
+// Your authorized access -> your google permissions
 const googleScopes = [
   'profile',
   'email',
@@ -50,6 +51,7 @@ const googleScopes = [
   'https://www.googleapis.com/auth/user.addresses.read',
 ];
 
+// Your facebook Permissions
 const fbPermissions = [
   'email',
   'public_profile',
