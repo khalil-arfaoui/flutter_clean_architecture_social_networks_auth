@@ -69,7 +69,10 @@ class _RegisterWithSocialPageState extends State<RegisterWithSocialPage> {
         child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
               onPressed: () async {
                 bool isTrue = await _onWillPop();
                 if (isTrue) {
@@ -96,8 +99,6 @@ class _RegisterWithSocialPageState extends State<RegisterWithSocialPage> {
                         'assets/logo.png',
                         fit: BoxFit.fill,
                         height: 160.0,
-                        color:
-                            Theme.of(context).primaryTextTheme.bodyText1?.color,
                       ),
                     ),
                     Padding(

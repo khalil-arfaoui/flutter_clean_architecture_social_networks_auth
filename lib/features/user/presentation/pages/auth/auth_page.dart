@@ -42,6 +42,17 @@ class AuthPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.32,
               ),
             ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Authentication',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

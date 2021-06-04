@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_clean_architecture_social_networks_auth/features/user/data/models/social_networks_model.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -42,7 +43,13 @@ class UserRepositoryImpl implements UserRepository {
   Future<Either<Failure, User>> addSocialUser(User user) async {
     if (await networkInfo.isConnected) {
       try {
-        UserModel userModel = user as UserModel;
+        final UserModel userModel = UserModel(
+          fullName: user.fullName,
+          email: user.email,
+          phone: user.phone,
+          address: user.address,
+          socialNetworks: user.socialNetworks as SocialNetworksModel,
+        );
         final remoteData = await remoteDataSource.addSocialUser(userModel);
         localDataSource.cacheUser(remoteData);
         return Right(remoteData);

@@ -10,8 +10,17 @@ import 'features/user/presentation/pages/auth/auth_page.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
+// Sets a platform override for desktop to avoid exceptions. See
+// https://flutter.dev/desktop#target-platform-override for more info.
+// void _enablePlatformOverrideForDesktop() {
+//   if (!kIsWeb && (Platform.isWindows || Platform.isLinux)) {
+//     debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+//   }
+// }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // _enablePlatformOverrideForDesktop();
   await di.init();
   runApp(
     MultiBlocProvider(
@@ -44,6 +53,7 @@ ThemeData themeData() {
         ),
       ),
     ),
+    iconTheme: IconThemeData(color: Colors.black),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         primary: Color(0xFFfc6011),

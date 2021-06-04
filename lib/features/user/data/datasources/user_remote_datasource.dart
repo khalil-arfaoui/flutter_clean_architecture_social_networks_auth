@@ -37,7 +37,8 @@ abstract class UserRemoteDataSource {
   Future<UserModel> getLoggedUser(String id);
 }
 
-const BASE_URL = 'http://base_url.com';
+// const BASE_URL = 'http://base_url.com';
+const BASE_URL = 'http://192.168.1.10:3000/buyer';
 
 const googleScopes = [
   'profile',
@@ -97,39 +98,35 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<UserModel> getUserBySocialNetworks(
     SocialNetworksModel socialNetworks,
   ) async {
-    try {
-      final Map<String, String> body = {
-        "email": socialNetworks.email!,
-        "id": socialNetworks.id,
-      };
-      final jsonString = json.encode(body);
-      final response = await client.post(
-        Uri.parse('$BASE_URL/login-third-party'),
-        body: jsonString,
-        headers: {'Content-Type': 'application/json'},
-      );
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
-        if (jsonResponse.containsKey('statusCode')) {
-          if (jsonResponse['statusCode'] == 401) {
-            ServerException serverException = ServerException(
-              message: jsonResponse['message'],
-              code: jsonResponse['code'].toString(),
-            );
-            throw serverException;
-          }
+    final Map<String, String> body = {
+      "email": socialNetworks.email!,
+      "id": socialNetworks.id,
+    };
+    final jsonString = json.encode(body);
+    final response = await client.post(
+      Uri.parse('$BASE_URL/login-third-party'),
+      body: jsonString,
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+      if (jsonResponse.containsKey('statusCode')) {
+        if (jsonResponse['statusCode'] == 401) {
+          ServerException serverException = ServerException(
+            message: jsonResponse['message'],
+            code: jsonResponse['code'].toString(),
+          );
+          throw serverException;
         }
-        final user = UserModel.fromJson(jsonResponse);
-        return user;
-      } else {
-        Map<String, dynamic> error = {
-          'message': json.decode(response.body)['message'],
-          'code': json.decode(response.body)['statusCode'].toString(),
-        };
-        throw error;
       }
-    } catch (error) {
-      throw ServerException();
+      final user = UserModel.fromJson(jsonResponse);
+      return user;
+    } else {
+      Map<String, dynamic> error = {
+        'message': json.decode(response.body)['message'],
+        'code': json.decode(response.body)['statusCode'].toString(),
+      };
+      throw error;
     }
   }
 
@@ -146,7 +143,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       final token = result.accessToken!.token;
       String link =
           'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,location,gender,birthday,age_range,link,picture.height(200)&access_token=$token';
-      Uri uri = Uri(path: link);
+      Uri uri = Uri.parse(link);
       final graphResponse = await http.get(uri);
       //! The default image size is 50x50 which is quite small. To change the image size, just use picture.height(200) in the URL instead of picture .
       final Map<String, dynamic> profile = json.decode(graphResponse.body);

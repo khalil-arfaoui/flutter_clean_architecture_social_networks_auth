@@ -10,6 +10,7 @@ import '../../bloc/user_bloc.dart';
 import '../../models_providers/auth_provider.dart';
 import '../../pages/auth/register_page.dart';
 import '../../pages/auth/reset_password_page.dart';
+import '../../pages/profile_page.dart';
 
 class LoginForm extends StatefulWidget {
   LoginForm({Key? key}) : super(key: key);
@@ -71,7 +72,10 @@ class _LoginFormState extends State<LoginForm> {
                   authProvider.loggedInOrOut = true;
                   authProvider.setUid = state.user.id;
                   authProvider.setUser = state.user;
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
                 } else if (state is UserError) {
                   String errorMessage = state.message;
                   ScaffoldMessenger.of(context)

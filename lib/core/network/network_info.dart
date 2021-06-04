@@ -1,8 +1,7 @@
-// ignore: import_of_legacy_library_into_null_safe
-
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/services.dart';
 
 abstract class NetworkInfo {
   Future<bool> get isConnected;
@@ -15,22 +14,27 @@ class NetworkInfoImpl implements NetworkInfo {
 
   @override
   Future<bool> get isConnected async {
-    ConnectivityResult connectivityResult =
-        await connectivity.checkConnectivity();
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
-      try {
-        final result = await InternetAddress.lookup('google.com');
+    try {
+      ConnectivityResult connectivityResult =
+          await connectivity.checkConnectivity();
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        final result = await InternetAddress.lookup('example.com');
+        print(result);
         if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
           print('connected');
           return true;
         }
         return false;
-      } on SocketException catch (_) {
-        print('not connected');
+      } else
         return false;
-      }
-    } else
+    } on PlatformException catch (e) {
+      print(e.toString());
       return false;
+    } on SocketException catch (e) {
+      print(e.toString());
+      print('not connected');
+      return false;
+    }
   }
 }

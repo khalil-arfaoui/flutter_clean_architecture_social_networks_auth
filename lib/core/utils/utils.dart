@@ -9,6 +9,8 @@ class Utils {
         return failure.message ?? SERVER_FAILURE_MESSAGE;
       case CacheFailure:
         return CACHE_FAILURE_MESSAGE;
+      case NetworkFailure:
+        return NETWORK_FAILURE_MESSAGE;
       default:
         return 'Unexpected Error';
     }

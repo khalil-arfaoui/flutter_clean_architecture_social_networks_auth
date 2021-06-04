@@ -2,6 +2,7 @@
     package="com.example.flutter_clean_architecture_social_networks_auth">
    <application
         android:label="flutter_clean_architecture_social_networks_auth"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
